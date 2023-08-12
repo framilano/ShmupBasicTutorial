@@ -1,0 +1,13 @@
+libs/.DS_Store
+
+backup/
+bbs/
+carts/
+cdata/
+cstore/
+plates/
+
+activity_log.txt
+log.txt
+sdl_controllers.txt
+config.txt
