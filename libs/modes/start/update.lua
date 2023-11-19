@@ -10,6 +10,9 @@ function update_start()
 	if (start.ship.flamespr > 8) start.ship.flamespr = 5
 
     if btnp(4) or btnp(5) then
-        change_mode("game")
+        change_mode_and_reset("game")
+        change_mode("wave")
+        add_timer({time=3, callback=change_mode, args={"game"}})
+        add_timer({time=3, callback=spawn_wave, args = {}})
     end
 end

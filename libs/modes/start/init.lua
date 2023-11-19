@@ -1,4 +1,5 @@
 function init_start()
+    music(0)
     start = {
         ship = {
             x = flr(rnd(120)),

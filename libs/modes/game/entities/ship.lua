@@ -1,4 +1,5 @@
 function controls()
+    if (game.lives <= 0) return
     ship_speed_x = 0
     ship_speed_y = 0
     game.ship.sprite = 1
@@ -20,13 +21,15 @@ function controls()
 
     if btn(5) and game.ship.current_bullet_cooldown <= 0 then
         new_bullet = {
-            x = game.ship.x,
-            y = game.ship.y - 3,
+            x = game.ship.x + 1,
+            y = game.ship.y - 6,
+            width = 6,
+            height = 8,
             sprite = 16,
             type = "normal"
         }
         add(game.ship.bullets, new_bullet)
-        game.ship.muzzle = 5
+        game.ship.muzzleflash = true
         sfx(0)
         game.ship.current_bullet_cooldown = game.ship.default_bullet_cooldown
     end
@@ -38,8 +41,8 @@ function controls()
 end
 
 function check_ship_limits()
-    if (game.ship.x > 120) game.ship.x = 0
-    if (game.ship.x < 0) game.ship.x = 120
+    if (game.ship.x > 120) game.ship.x = 120
+    if (game.ship.x < 0) game.ship.x = 0
     if (game.ship.y > 117) game.ship.y = 117
     if (game.ship.y < 0) game.ship.y = 0
 end
@@ -66,32 +69,27 @@ function update_flames()
     if (game.ship.flamespr > 8) game.ship.flamespr = 5
 end
 
-function update_muzzleflash()
-    if (game.ship.muzzle > 0) game.ship.muzzle -= 1
-end
-
 function check_bullet_collision()
     for enemy in all(game.enemies) do
         for bullet in all(game.ship.bullets) do
-            if is_colliding(enemy, bullet, 6) then
+            if is_colliding(enemy, bullet) then
                 del(game.ship.bullets, bullet)
-                enemy.flashing = 2
-                enemy.hp -= 50
+                enemy.hp -= 1
+                
+                --FX
                 sfx(3)
+                enemy.flashing = 2
+                add_sparks_particles(enemy.x + 4, enemy.y + 4, 2)
 
                 if enemy.hp <= 0 then
-                    add(
-                        game.explosions, {
-                            x = enemy.x - 4,
-                            y = enemy.y - 4,
-                            type = "normal",
-                            animation_timings = { 0, 0, 0, 0, 0 }
-                        }
-                    )
-                    del(game.enemies, enemy)
-                    spawn_enemy()
-                    game.score += 10
+                    --FX
                     sfx(2)
+                    add_big_shockwave_particle(enemy.x + 4, enemy.y + 4, { 7 })
+                    add_explosion_particles(enemy.x + 4, enemy.y + 4, { 10, 10, 10, 9, 9, 8, 2, 5 }, 15)
+                    add_sparks_particles(enemy.x + 4, enemy.y + 4, 30)
+
+                    del(game.enemies, enemy)
+                    game.score += 1
                 end
             end
         end

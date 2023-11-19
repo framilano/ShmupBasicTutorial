@@ -1,14 +1,16 @@
 function init_game()
     game = {
-        frame_counter = 0,
-        score = 0,
+        wave = 1,
+		score = 0,
         lives = 3,
         bombs = 1,
         ship = {
             x = 56,
-            y = 56,
-            muzzle = 0,
+            y = 100,
+            width = 8,
+            height = 8,
             flamespr = 4,
+            muzzleflash = false,
             sprite = 1,
             default_speed_x = 3,
             default_speed_y = 3,
@@ -19,12 +21,11 @@ function init_game()
         },
         stars = {},
         enemies = {},
-        explosions = {},
+        particles = {}
     }
 
-    --Adding enemies
-    spawn_enemy()
-
+    --Stops the music, 3000 milliseconds fading out
+    music(-1, 2000)
     --creating stars and adding stars to game
     add_stars()
 end

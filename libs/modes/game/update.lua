@@ -1,7 +1,4 @@
 function update_game()
-	--counting total frames since mode starts
-	game.frame_counter += 1
-	
 	--check game control buttons pressed
 	controls()
 
@@ -13,9 +10,6 @@ function update_game()
 
 	--animate flames
 	update_flames()
-
-	--animate muzzleflash
-	update_muzzleflash()
 
 	--animate enemies
 	update_enemies()
